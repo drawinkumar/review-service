@@ -9,7 +9,7 @@ import (
 )
 
 type HotelReview struct {
-	ID        uint   `gorm:"primaryKey;autoIncrement" json:"-"`
+	gorm.Model
 	HotelID   int    `gorm:"column:hotel_id" json:"hotelId"`
 	Platform  string `gorm:"column:platform" json:"platform"`
 	HotelName string `gorm:"column:hotel_name" json:"hotelName"`

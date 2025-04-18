@@ -2,7 +2,7 @@ services:
   review:
     build: ./src
     ports:
-      - "8000:5000"
+      - "8080:8080"
     depends_on:
       - mysql
       - minio

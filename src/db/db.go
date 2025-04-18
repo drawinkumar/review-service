@@ -5,7 +5,6 @@ import (
 
 	"example.com/review/v2/config"
 	"example.com/review/v2/db/model"
-	"example.com/review/v2/db/model/jobs"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -19,7 +18,6 @@ func InitDB(cfg *config.Config) (*gorm.DB, error) {
 	}
 
 	// auto migrate
-	dbConn.AutoMigrate(&jobs.Jobs{})
 	dbConn.AutoMigrate(&model.HotelReview{})
 
 	return dbConn, nil

@@ -2,7 +2,6 @@ package storage
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/url"
 
@@ -27,7 +26,7 @@ func NewClient(cfg *config.Config) (*s3.Client, error) {
 
 	if cfg.Provider == "minio" {
 		endpoint, err := url.Parse(cfg.Endpoint)
-		fmt.Println(endpoint)
+		// fmt.Println(endpoint)
 		if err != nil {
 			log.Fatalf("Unable to parse MinIO endpoint: %v", err)
 		}
