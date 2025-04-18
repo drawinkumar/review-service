@@ -1,0 +1,12 @@
+.DS_Store
+
+# ignore content
+data/mysql/*
+data/minio/*
+src/tmp/*
+tmp/*
+
+# keep folders
+!data/mysql/.gitignore
+!data/minio/.gitignore
+!src/tmp/.gitignore
