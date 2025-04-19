@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"sync"
 	"time"
 
@@ -44,16 +45,43 @@ func (a *App) JobApiHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) ReviewsApiHandler(w http.ResponseWriter, r *http.Request) {
-	// get 100 latest reviews
+	// get page number
+	page := r.URL.Query().Get("page")
+	pageNum := 1
+	if page != "" {
+		var err error
+		pageNum, err = strconv.Atoi(page)
+		if err != nil {
+			response := Response{
+				Message: "Invalid page number",
+				Status:  "failed",
+			}
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(response)
+			return
+		} else if pageNum <= 0 {
+			response := Response{
+				Message: "page should be positive",
+				Status:  "failed",
+			}
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(response)
+			return
+		}
+	}
+
+	// get 100 latest reviews at requested page
+	pageSize := 100
+	offset := (pageNum - 1) * pageSize
 	var reviews []model.HotelReview
-	a.DB.Order("created_at desc").Limit(100).Find(&reviews)
+	a.DB.Order("created_at desc").Offset(offset).Limit(100).Find(&reviews)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(reviews)
 }
 
 func (a *App) StartServer() {
 	r := mux.NewRouter().StrictSlash(true)
-	r.HandleFunc("/", a.JobApiHandler).Methods("GET")
+	r.HandleFunc("/process/", a.JobApiHandler).Methods("GET")
 	r.HandleFunc("/reviews/", a.ReviewsApiHandler).Methods("GET")
 	fmt.Println("Server is running on http://localhost:8080")
 	if err := http.ListenAndServe(":8080", r); err != nil {

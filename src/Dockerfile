@@ -10,4 +10,5 @@ WORKDIR /app
 
 EXPOSE 8080
 
-CMD sleep 3 && /godocker
+# wait 10 seconds for mysql to start
+CMD echo "\n\n\nwaiting 10 seconds for mysql and minio to start...\n\n\n" && sleep 10 && /godocker

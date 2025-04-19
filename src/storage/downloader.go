@@ -20,7 +20,6 @@ func DownloadFile(client *s3.Client, cfg *config.Config) (string, error) {
 		Key:    &reviewFilePath,
 	})
 	if err != nil {
-		fmt.Println("Bucket: ", cfg.Bucket)
 		return "", fmt.Errorf("S3 get failure for %s: %w", reviewFilePath, err)
 	}
 	defer resp.Body.Close()
